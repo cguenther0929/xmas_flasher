@@ -5,9 +5,9 @@
 *
 *   DEVICE: PIC18F66K22
 *
-*   COMPILER: Microchip XC8 v1.10
+*   COMPILER: Microchip XC8 v2.0
 *
-*   IDE: MPLAB X v1.60
+*   IDE: MPLAB X v5.10
 *
 *   TODO:
 *
@@ -23,7 +23,6 @@
 #include <stdbool.h>
 #include "config.h"
 #include "struct.h"
-#include "uart.h"
 #include "math.h"
 
 /* The following preprocessor calculations have been proven to work.  Let the float values be floats since

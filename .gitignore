@@ -3,8 +3,8 @@ src/stdbool.h
 src/stdint.h
 src/pic12lf1501.h
 
-TBD.X/funclist
-TBD.X/l.obj
-TBD.X/build
-TBD.X/dist
-TBD.X/nbproject/*
+XMAS_FLASHER.X/funclist
+XMAS_FLASHER.X/l.obj
+XMAS_FLASHER.X/build
+XMAS_FLASHER.X/dist
+XMAS_FLASHER.X/nbproject/*

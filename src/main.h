@@ -5,9 +5,9 @@
 *
 *   DEVICE: PIC18F66K22
 *
-*   COMPILER: Microchip XC8 v1.32
+*   COMPILER: Microchip XC8 v2.0
 *
-*   IDE: MPLAB X v3.45
+*   IDE: MPLAB X v5.10
 *
 *   TODO:  
 *
@@ -25,10 +25,7 @@
 #include "isr.h"
 #include "config.h"     //Project specific header file
 #include "timer.h"
-#include "adc.h"
-#include "uart.h"
 #include "pwm.h"
-#include "motor.h"
 
 
 /********************************************************

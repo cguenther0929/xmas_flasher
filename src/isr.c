@@ -6,9 +6,9 @@
 *
 *   DEVICE: pic12lf1501
 *
-*   COMPILER: Microchip XC8 v1.32
+*   COMPILER: Microchip XC8 v2.0
 *
-*   IDE: MPLAB X v3.45
+*   IDE: MPLAB X v5.10
 *
 *   TODO:  
 *
@@ -21,100 +21,12 @@
 struct GlobalInformation gblinfo;
 
 void Init_Interrupts( void ) {
-
-    IPEN = 1;           //This allows interrupts to be defined a priority (either high or low) -- see page 103/380
-    GIEH = 1;           //Enable all interrupts with high priority
-    GIEL = 1;           //Enable all interrupts with low priority
-
-}
-
-void PORTBINTSetup( uint8_t channel, bool edge_rising, bool highpri ) {
-	switch (channel) {
-        case 0: 
-            //No option to set priority on this interrupt -- it is always high!
-            TRISB0 = input;
-            INT0IF = 0;     //Clear this flag before enabling interrupt 
-            INT0IE = 1;     //Enable the INT0 interrupt
-            (edge_rising == true)?(INTEDG0 = 1):(INTEDG0 = 1);
-        break;
-        
-        case 1:
-            TRISB1 = input;
-            INT1IF = 0;     //Clear this flag before enabling interrupt 
-            INT1IE = 1;     //Enable INT1 interrupt 
-            (highpri == true) ? (INT1IP = 1):(INT1IP = 0);
-            (edge_rising == true)?(INTEDG1 = 1):(INTEDG1 = 1);
-        break;
-        
-        case 2:
-            TRISB2 = input;
-            INT2IF = 0;     //Clear this flag before enabling interrupt 
-            INT2IE = 1;     //Enable the INT2 interrupt
-            (highpri == true) ? (INT2IP = 1):(INT2IP = 0);
-            (edge_rising == true)?(INTEDG2 = 1):(INTEDG2 = 1);
-        break;
-
-        default:
-        
-        break;
-
-    }
-
-}
-void PORTBINTState( uint8_t channel, bool enabled) {
-	switch (channel) {
-        case 0: 
-            INT0IF = 0;     //Clear this flag before enabling interrupt 
-            (enabled == true)?(INT0IE = 1):(INT0IE = 1);
-        break;
-        
-        case 1:
-            INT1IF = 0;     //Clear this flag before enabling interrupt 
-            (enabled == true)?(INT1IE = 1):(INT1IE = 1);
-        break;
-        
-        case 2:
-            INT2IF = 0;     //Clear this flag before enabling interrupt 
-            (enabled == true)?(INT2IE = 1):(INT2IE = 1);
-        break;
-
-        default:
-
-        break;
-
-    }
-
+    GIE     = 1;                //p68
 }
 
 
-void interrupt high_priority edges_isr( void ) {     
-    
-    if(TMR1IF){
-        TMR1IF = 0;
-        gblinfo.time_to_commutate = true;
-    }
-    
-    if(INT0IF){
-        INT0IF = 0;
-    }
-    
-    if(INT1IF){
-        INT1IF = 0;     //Clear the interrupt flag
-    }
-    
-    if(INT2IF){
-        INT2IF = 0;     //Clear the interrupt flag
-    }
 
-    if(INT3IF) {
-        INT3IF = 0;     //Clear the interrupt flag
-    }
-
-}
-
-void interrupt low_priority main_isr( void ) {
-
-    uint8_t temp = 0;
+void interrupt tc_int ( void ) {     
     
     if(TMR0IF){                                     //Timer 1 interrupt
         TMR0H = TMR0HIGH;                        //Load the high register for the timer -- looking for 1/100 of a tick1000ms
@@ -144,29 +56,11 @@ void interrupt low_priority main_isr( void ) {
         TMR0IF = 0;                         //Software is responsible for clearing this flag
     }   /* END IF FOR TMR1IF */
     
-    // if(PIR2bits.TMR3IF){
-        // PIR2bits.TMR3IF = 0;                     //Clear the interrupt flag  
-    // } /* END IF FOR TMR3IF */
 
-
-    // if(INT1IF){
-    //     INTCON3bits.INT1IF = 0;     //Clear the interrupt flag
-        // if(RB1 == 1){         //TODO remove this junk
-        //     gblinfo.wakeedge = true;
-        // }
-    // }
-    
-    // if(INTCON3bits.INT2IF){
-    //     INTCON3bits.INT2IF = 0;     //Clear the interrupt flag
-    // }
-
-    // if(INTCON3bits.INT3IF) {
-    //     INTCON3bits.INT3IF = 0;     //Clear the interrupt flag
-    // }
-    
-} /* END void interrupt low_priority main_isr( void ) */
+}
 
 void Events10ms(void) {                  //Keep routine slim!
+
 }
 
 void Events100ms(void) {                //Keep routine slim!
@@ -179,11 +73,9 @@ void Events1000ms(void) {
 
 
 void DisableInterrupts( void ) {
-    GIEH = 0;           //Disable high priority interrupts
-    GIEL = 0;           //Disable low priority interrupts
+    GIE     = 0;                //p68
 }
 
 void EnableInterrupts( void ) {
-    GIEH = 1;           //Enable high priority interrupts
-    GIEL = 1;           //Enable low priority interrupts
+    GIE     = 1;                //p68
 }
