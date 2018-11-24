@@ -9,7 +9,7 @@
 *
 *   IDE: MPLAB X v5.10
 *
-*   TODO:  
+*   TODO:  Need to clean this file up
 *
 *   NOTE:
 *
@@ -35,26 +35,7 @@
 ********************************************************/
 void Init_Interrupts( void );
 
-/********************************************************
-*FUNCTION: void interrupt low_priority main_isr( void )
-*PURPOSE: This is the low priority interrupt that will handle
-    the majority of the interrupts generated.  Examples would
-    be the UART and timer.  These are non-critical interrupts
-*PRECONDITION: Interrupt flag not set.
-*POSTCONDITION: Interrupt respond to and flag cleared
-*RETURN: Nothing
-********************************************************/
-void interrupt low_priority main_isr( void );
-
-/********************************************************
-*FUNCTION: void interrupt high_priority edges_isr( void )
-*PURPOSE: This is where the vector will point when we detect
-    and edge on one of the TACH signal inputs
-*PRECONDITION: Interrupt flag not set.
-*POSTCONDITION: Interrupt respond to and flag cleared
-*RETURN: Nothing
-********************************************************/
-void interrupt high_priority edges_isr( void );
+void interrupt tc_int ( void );  //TODO need to comment
 
 /********************************************************
 *FUNCTION: void DisableInterrupts( void )
@@ -103,28 +84,6 @@ void Events100ms(void);
 *RETURN: Nothing
 ********************************************************/
 void Events1000ms(void);       
-
-/********************************************************
-*FUNCTION: void PORTBINTSetup( uint8_t channel, bool edge_rising, bool highpri )
-*PURPOSE: Initialize external interrupt channels (i.e. INT0)
-*PRECONDITION: Interrupts must be enabled.  Note that defineing
-* as high priority will require the flag be moved into the 
-* appropriate ISR function.  
-*POSTCONDITION: INTx interrupts now setup 
-*RETURN: Nothing
-********************************************************/
-void PORTBINTSetup( uint8_t channel, bool edge_rising, bool highpri );     
-
-/********************************************************
-*FUNCTION: void PORTBINTDisable ( uint8_t channel )
-*PURPOSE: Helper function to enable/disable external 
-*       interrupts (i.e. INT0)
-*PRECONDITION: External interrupts must first be properly 
-*       setup (i.e. PORTBINTSetup()).  
-*POSTCONDITION: INTx interrupts now enabled / disabled  
-*RETURN: Nothing
-********************************************************/
-void PORTBINTState( uint8_t channel, bool enabled);
 
 #endif
 /* END OF FILE */

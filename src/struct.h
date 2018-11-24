@@ -24,12 +24,6 @@
 
 extern struct GlobalInformation         //  Structure to pass information that is shared among modules
 {
-    uint8_t     comu_state;             // Holder for commutate state of motor
-    uint8_t     closed_loop_state;      // To describe the intermediate state while looking for the next commutate state
-    uint8_t     motor_run_mode;         // Container to track the run mode
-    uint16_t    motor_rpm;              // Container for track motor RPM in revs per minute
-    bool        time_to_commutate;      // Flag is set in timer1 interrupt when it's time to commutate
-    
     uint16_t    tick10ms;               // Increases every 50mili tick1000monds 
     uint16_t    tick100ms;              // Used to keep track of passing deci-tick1000monds
     uint16_t    tick1000ms;             // Use this to tick tick1000monds -- might not be used for audio interface board

@@ -40,7 +40,37 @@ void main()
     SetUp();
     
     while (true) {
+        //Control all three with PWM
+        PWM_ON(RED_LED_PWM_BIT,10);
+        PWM_ON(GRN_LED_PWM_BIT,10);
+        PWM_ON(BLU_LED_PWM_BIT,10);
+        tick100msDelay(50);
 
+        PWM_ON(RED_LED_PWM_BIT,20);
+        PWM_ON(GRN_LED_PWM_BIT,20);
+        PWM_ON(BLU_LED_PWM_BIT,20);
+        tick100msDelay(50);
+
+        PWM_ON(RED_LED_PWM_BIT,50);
+        PWM_ON(GRN_LED_PWM_BIT,50);
+        PWM_ON(BLU_LED_PWM_BIT,50);
+        tick100msDelay(50);
+
+        // Verify we have control and can shut various ones off
+        PWM_ON(RED_LED_PWM_BIT,10);
+        PWM_OFF(GRN_LED_PWM_BIT);
+        PWM_OFF(BLU_LED_PWM_BIT);
+        tick100msDelay(50);
+        
+        PWM_ON(GRN_LED_PWM_BIT,10);
+        PWM_OFF(RED_LED_PWM_BIT);
+        PWM_OFF(BLU_LED_PWM_BIT);
+        tick100msDelay(50);
+        
+        PWM_ON(BLU_LED_PWM_BIT,10);
+        PWM_OFF(GRN_LED_PWM_BIT);
+        PWM_OFF(BLU_LED_PWM_BIT);
+        tick100msDelay(50);
     }
 
 } //END Main()
@@ -58,23 +88,12 @@ void SetUp(void)
     0b0101  = 125kHz    
     0b0000  = 31kHz
     *****************/
-    
     OSCCONbits.IRCF = 0             // Internal oscillator set to 31kHz.  Config bits above select the internal oscillator.
     
-    /* PIN DIRECTIONS FOR LED DRIVERS */
+    /* PIN DIRECTIONS FOR LED OUTPUTS */
     TRISA2 = output;
     TRISA4 = output;
     TRISA5 = output;
-    
-    /* SETUP TIMER FOR PWM GENERATION */  
-    // Clear the PWMxCON register
-    
-    PR2                 = PWM_PR2       
-
-    Timer2Init(TMR2_PRESCALER);
-    Timer2On();
-    
-    //TODO left off here, pick back up on p154 for how to setup PWM
     
     Init_Interrupts();                  //Set up interrupts  
 
@@ -85,12 +104,8 @@ void SetUp(void)
     /* DISABLE ANALOG CHANNELS */
     ANSELA = 0x00;          // Disable analog channels to select digital IO function.  p103
 
-
-    //TODO need to fix the following
-    // PWM1Init(TIMER2);				            //Initialize PWM 1 -- ARGS: Timer to use (options are 2, 4, 6, 8 and 10)
-	// PWM1EnableOuts('x');		                    //ARGS: Output pin (ex 'a', 'b', 'c', or 'd').  'x' will leave the pin as digital I/O for now
-	// Timer2Init(0,PWM_Timer_Prescaler,1);  		//Args: Interrupts, Prescaler, Postscaler
-	// Timer2On(PWM_Timer_PR_Value);				//Args: Period register unsigned char
+    /* CONFIGURE PWM */ 
+    InitPWM();
 
     /* TIMER FOR APPLICATION INTERRUPTS */
     Timer0Init(TMR0_INTUP_SETTING, TMR0_PRESCALER); // interrupts = yes, prescaler = 16, clksource = FOSC/4 

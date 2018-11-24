@@ -44,7 +44,7 @@ void Timer0On( void );
 
 void Timer2Init(uint8_t prescaler);  //TODO comment
 
-Timer2On ( void ); //TODO comment
+void Timer2On ( void ); //TODO comment
 
 #endif
 /* END OF FILE */
