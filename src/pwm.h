@@ -23,6 +23,7 @@
 #include <stdbool.h>
 #include "config.h"
 #include "struct.h"
+#include "timer.h"
 
 void InitPWM( void );  //TODO need to comment
 

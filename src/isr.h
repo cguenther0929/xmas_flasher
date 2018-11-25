@@ -35,7 +35,7 @@
 ********************************************************/
 void Init_Interrupts( void );
 
-void interrupt tc_int ( void );  //TODO need to comment
+void __interrupt () my_isr_routine (void);  //TODO need to comment
 
 /********************************************************
 *FUNCTION: void DisableInterrupts( void )

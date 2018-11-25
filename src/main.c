@@ -88,7 +88,7 @@ void SetUp(void)
     0b0101  = 125kHz    
     0b0000  = 31kHz
     *****************/
-    OSCCONbits.IRCF = 0             // Internal oscillator set to 31kHz.  Config bits above select the internal oscillator.
+    OSCCONbits.IRCF = 0;             // Internal oscillator set to 31kHz.  Config bits above select the internal oscillator.
     
     /* PIN DIRECTIONS FOR LED OUTPUTS */
     TRISA2 = output;

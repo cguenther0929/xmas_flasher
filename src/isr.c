@@ -26,11 +26,10 @@ void Init_Interrupts( void ) {
 
 
 
-void interrupt tc_int ( void ) {     
+void __interrupt () my_isr_routine (void) {  
     
     if(TMR0IF){                                     //Timer 1 interrupt
-        TMR0H = TMR0HIGH;                        //Load the high register for the timer -- looking for 1/100 of a tick1000ms
-        TMR0L = TMR0LOW;                        //Load the low register for the timer
+        TMR0 = TMR0_REG_SETTING;
         
         Events10ms();
         

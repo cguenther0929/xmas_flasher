@@ -31,7 +31,7 @@
 *POSTCONDITION: Timer 1 is ready to use
 *RETURN: Nothing
 ********************************************************/
-void Timer0Init(uint8_t interrupts, uint8_t prescaler) ;
+void Timer0Init(uint8_t interrupts, uint16_t prescaler) ;
 
 /********************************************************
 *FUNCTION: void Timer0On( void )
