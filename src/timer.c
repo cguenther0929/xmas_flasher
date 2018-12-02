@@ -21,7 +21,7 @@
 struct GlobalInformation gblinfo;
 
 void Timer0On( void ){
-    #ifndef TMR0_REG                    //Assume TMR0LOW is also not defined
+    #ifndef TMR0_REG_SETTING                    //Assume TMR0LOW is also not defined
         TMR0 = TMR0_REG_SETTING;
     #else
         TMR0 = 125;
@@ -49,30 +49,38 @@ void Timer0Init(uint8_t interrupts, uint16_t prescaler) {
     
     switch (prescaler){     //Set the prescaler
         case 1:         //User wished not to use prescaler.  Will run FOSC/4
-            OPTION_REGbits.PSA = 1;                // Disables the prescaler for 1:1 relationship p144
+            OPTION_REGbits.PSA = 1;                      // Disables the prescaler for 1:1 relationship p144
             break;
         case 2:
-            OPTION_REGbits.PS = 0;                       //Prescaler of 1:2 (p145)
+            OPTION_REGbits.PSA = 0;                      // Must be cleared in order to enable the prescaler 
+            OPTION_REGbits.PS = 0;                      //Prescaler of 1:2 (p145)
             break;
         case 4:
+            OPTION_REGbits.PSA = 0;                      // Must be cleared in order to enable the prescaler 
             OPTION_REGbits.PS = 1;                       //Prescaler of 1:4 (p145)
             break;
         case 8:
+            OPTION_REGbits.PSA = 0;                      // Must be cleared in order to enable the prescaler 
             OPTION_REGbits.PS = 2;                       //Prescaler of 1:8 (p145)
             break;
         case 16:
+            OPTION_REGbits.PSA = 0;                      // Must be cleared in order to enable the prescaler 
             OPTION_REGbits.PS = 3;                       //Prescaler of 1:16 (p145)
             break;
         case 32:
+            OPTION_REGbits.PSA = 0;                      // Must be cleared in order to enable the prescaler 
             OPTION_REGbits.PS = 4;                       //Prescaler of 1:32 (p145)
             break;
         case 64:
+            OPTION_REGbits.PSA = 0;                      // Must be cleared in order to enable the prescaler 
             OPTION_REGbits.PS = 5;                       //Prescaler of 1:64 (p145)
             break;
         case 128:
+            OPTION_REGbits.PSA = 0;                      // Must be cleared in order to enable the prescaler 
             OPTION_REGbits.PS = 6;                       //Prescaler of 1:128 (p145)
             break;
         case 256:
+            OPTION_REGbits.PSA = 0;                      // Must be cleared in order to enable the prescaler 
             OPTION_REGbits.PS = 7;                       //Prescaler of 1:256 (p145)
             break;
         default:                //Will not use the prescaler

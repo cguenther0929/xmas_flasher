@@ -49,6 +49,22 @@ void InitPWM( void ){
 void PWM_ON(uint8_t pwm_bit, uint8_t pwm_duty) {
 
 	uint16_t reg_val = 0;
+
+	switch (pwm_bit) {
+		case RED_LED_PWM_BIT:
+			if(pwm_duty > MAX_PWM_RED)
+				pwm_duty = MAX_PWM_RED;
+		
+		case GRN_LED_PWM_BIT:
+			if(pwm_duty > MAX_PWM_GRN)
+				pwm_duty = MAX_PWM_GRN;
+		
+		case BLU_LED_PWM_BIT:
+			if(pwm_duty > MAX_PWM_BLU)
+				pwm_duty = MAX_PWM_BLU;
+	}
+
+
 	
 	switch (pwm_bit) {
 		case 1:
@@ -64,8 +80,8 @@ void PWM_ON(uint8_t pwm_bit, uint8_t pwm_duty) {
 		case 2:
 			reg_val = pwm_duty * PWM_DUTY_CONSTANT;
     		
-			PWM1DCHbits.PWM1DCH = (uint8_t)((reg_val >> 2) & 0xFF);
-    		PWM1DCLbits.PWM1DCL = (uint8_t)(reg_val & 0x03);
+			PWM2DCHbits.PWM2DCH = (uint8_t)((reg_val >> 2) & 0xFF);
+    		PWM2DCLbits.PWM2DCL = (uint8_t)(reg_val & 0x03);
 			
 			PWM2CONbits.PWM2EN = 1;
 			PWM2CONbits.PWM2OE = 1;
@@ -74,8 +90,8 @@ void PWM_ON(uint8_t pwm_bit, uint8_t pwm_duty) {
 		case 3:
 			reg_val = pwm_duty * PWM_DUTY_CONSTANT;
     		
-			PWM1DCHbits.PWM1DCH = (uint8_t)((reg_val >> 2) & 0xFF);
-    		PWM1DCLbits.PWM1DCL = (uint8_t)(reg_val & 0x03);
+			PWM3DCHbits.PWM3DCH = (uint8_t)((reg_val >> 2) & 0xFF);
+    		PWM3DCLbits.PWM3DCL = (uint8_t)(reg_val & 0x03);
 			
 			PWM3CONbits.PWM3EN = 1;
 			PWM3CONbits.PWM3OE = 1;
@@ -84,8 +100,8 @@ void PWM_ON(uint8_t pwm_bit, uint8_t pwm_duty) {
 		case 4:
 			reg_val = pwm_duty * PWM_DUTY_CONSTANT;
     		
-			PWM1DCHbits.PWM1DCH = (uint8_t)((reg_val >> 2) & 0xFF);
-    		PWM1DCLbits.PWM1DCL = (uint8_t)(reg_val & 0x03);
+			PWM4DCHbits.PWM4DCH = (uint8_t)((reg_val >> 2) & 0xFF);
+    		PWM4DCLbits.PWM4DCL = (uint8_t)(reg_val & 0x03);
 			
 			PWM4CONbits.PWM4EN = 1;
 			PWM4CONbits.PWM4OE = 1;

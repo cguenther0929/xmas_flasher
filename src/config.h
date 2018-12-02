@@ -23,7 +23,7 @@
 #include <xc.h>
 
 /* MCU CRITICAL PARAMETERS */
-#define OSC                            31000                    // Internal oscillator selected and IRCF set for 31kHz
+#define OSC                            250000                   // Internal oscillator selected and IRCF set for 31kHz
 #define MCU_TOSC                       1/OSC                    // Period of oscillator timer
 #define OSC_DIV4                       (OSC/4.0)                //Instruction clock is oscillator frequency / 4
 
@@ -38,10 +38,11 @@
 #define TMR0_INC_FREQ       (OSC_DIV4/TMR0_PRESCALER)                                   // Effective rate at which the timer increments
 #define HEART_BEAT_MS       10.0                                                        // Interrupt every this many (mili-seconds)
 #define TMR0_TICKS          ((HEART_BEAT_MS/1000.0)*TMR0_INC_FREQ)                      // How many timer ticks between interrupts
-#define TMR0_REG_SETTING    (uint8_t)(256-TMR0_TICKS)                                   // Value to be loaded into the 8-bit register
+// #define TMR0_REG_SETTING    (uint8_t)(256-TMR0_TICKS)                                   // Value to be loaded into the 8-bit register
+#define TMR0_REG_SETTING    217                                   // Value to be loaded into the 8-bit register
 
 /* PREPROCESSOR CALCULATIONS FOR PWM */
-#define TMR2_PRESCALER      1.0
+#define TMR2_PRESCALER      4.0                                                         // Options are 1, 4, 16, 64
 #define PWM_FREQ            120.0
 #define PWM_PR2             (uint8_t)((1/(PWM_FREQ*4*MCU_TOSC*TMR2_PRESCALER))-1)
 
@@ -60,14 +61,22 @@
 #define input               1
 
 /* LED CONTROL */
-#define ledon               0
-#define ledoff              1
+#define ledon               1
+#define ledoff              0
 
+/***************
+* Maximum Red Voltage = 2.0V
+* Maximum Grn Voltage = 3.2V
+* Maximum Blu Voltage = 3.2V
+*/
+#define MAX_PWM_RED         70
+#define MAX_PWM_GRN         99
+#define MAX_PWM_BLU         99
 /* ALIASES FOR LED OUTPUT PINS */
 //TODO should be able to remove
-// #define RED_LED             LATAbits.LATA2
-// #define GRN_LED             LATAbits.LATA4
-// #define BLU_LED             LATAbits.LATA5
+#define RED_LED             LATAbits.LATA2
+#define GRN_LED             LATAbits.LATA4
+#define BLU_LED             LATAbits.LATA5
 
 /* PWM BIT ASSIGNMENTS */
 #define RED_LED_PWM_BIT     1           // This color attached to RA2 or PWM peripheral PWM 1              

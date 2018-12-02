@@ -37,40 +37,109 @@ struct GlobalInformation gblinfo;
 
 void main()
 {
+    uint16_t i;                 // For loop counter
     SetUp();
     
     while (true) {
         //Control all three with PWM
-        PWM_ON(RED_LED_PWM_BIT,10);
-        PWM_ON(GRN_LED_PWM_BIT,10);
-        PWM_ON(BLU_LED_PWM_BIT,10);
-        tick100msDelay(50);
+        // PWM_ON(RED_LED_PWM_BIT,10);
+        // PWM_ON(GRN_LED_PWM_BIT,10);
+        // PWM_ON(BLU_LED_PWM_BIT,10);
+        // tick100msDelay(50);
 
-        PWM_ON(RED_LED_PWM_BIT,20);
-        PWM_ON(GRN_LED_PWM_BIT,20);
-        PWM_ON(BLU_LED_PWM_BIT,20);
-        tick100msDelay(50);
+        // PWM_ON(RED_LED_PWM_BIT,20);
+        // PWM_ON(GRN_LED_PWM_BIT,20);
+        // PWM_ON(BLU_LED_PWM_BIT,20);
+        // tick100msDelay(50);
 
-        PWM_ON(RED_LED_PWM_BIT,50);
-        PWM_ON(GRN_LED_PWM_BIT,50);
-        PWM_ON(BLU_LED_PWM_BIT,50);
-        tick100msDelay(50);
+        // PWM_ON(RED_LED_PWM_BIT,50);
+        // PWM_ON(GRN_LED_PWM_BIT,50);
+        // PWM_ON(BLU_LED_PWM_BIT,50);
+        // tick100msDelay(50);
 
-        // Verify we have control and can shut various ones off
-        PWM_ON(RED_LED_PWM_BIT,10);
-        PWM_OFF(GRN_LED_PWM_BIT);
-        PWM_OFF(BLU_LED_PWM_BIT);
-        tick100msDelay(50);
+        // // Verify we have control and can shut various ones off
+        // PWM_ON(RED_LED_PWM_BIT,10);
+        // PWM_OFF(GRN_LED_PWM_BIT);
+        // PWM_OFF(BLU_LED_PWM_BIT);
+        // tick100msDelay(50);
         
-        PWM_ON(GRN_LED_PWM_BIT,10);
+        // PWM_ON(GRN_LED_PWM_BIT,10);
+        // PWM_OFF(RED_LED_PWM_BIT);
+        // PWM_OFF(BLU_LED_PWM_BIT);
+        // tick100msDelay(50);
+        
+        // PWM_ON(BLU_LED_PWM_BIT,10);
+        // PWM_OFF(GRN_LED_PWM_BIT);
+        // PWM_OFF(RED_LED_PWM_BIT);
+        // tick100msDelay(50);
+
+        // PWM_ON(GRN_LED_PWM_BIT,5);
+        // tick100msDelay(10);
+        // PWM_ON(GRN_LED_PWM_BIT,10);
+        // tick100msDelay(10);
+        // PWM_ON(GRN_LED_PWM_BIT,15);
+        // tick100msDelay(10);
+        // PWM_ON(GRN_LED_PWM_BIT,20);
+        // tick100msDelay(10);
+        // PWM_ON(GRN_LED_PWM_BIT,25);
+        // tick100msDelay(10);
+        // PWM_OFF(GRN_LED_PWM_BIT);
+        
+        // PWM_ON(RED_LED_PWM_BIT,5);
+        // tick100msDelay(10);
+        // PWM_ON(RED_LED_PWM_BIT,10);
+        // tick100msDelay(10);
+        // PWM_ON(RED_LED_PWM_BIT,15);
+        // tick100msDelay(10);
+        // PWM_ON(RED_LED_PWM_BIT,20);
+        // tick100msDelay(10);
+        // PWM_ON(RED_LED_PWM_BIT,25);
+        // tick100msDelay(10);
+        // PWM_OFF(RED_LED_PWM_BIT);
+        
+        // PWM_ON(BLU_LED_PWM_BIT,5);
+        // tick100msDelay(10);
+        // PWM_ON(BLU_LED_PWM_BIT,10);
+        // tick100msDelay(10);
+        // PWM_ON(BLU_LED_PWM_BIT,15);
+        // tick100msDelay(10);
+        // PWM_ON(BLU_LED_PWM_BIT,20);
+        // tick100msDelay(10);
+        // PWM_ON(BLU_LED_PWM_BIT,25);
+        // tick100msDelay(10);
+        // PWM_OFF(BLU_LED_PWM_BIT);
+
+        PWM_OFF(GRN_LED_PWM_BIT);
         PWM_OFF(RED_LED_PWM_BIT);
         PWM_OFF(BLU_LED_PWM_BIT);
-        tick100msDelay(50);
         
-        PWM_ON(BLU_LED_PWM_BIT,10);
+        for(i=1;i<MAX_PWM_GRN;i++) {
+            PWM_ON(GRN_LED_PWM_BIT,i);
+            tick10msDelay(1);
+        }
+        PWM_OFF(GRN_LED_PWM_BIT);
+        
+        for(i=1;i<MAX_PWM_RED;i++) {
+            PWM_ON(RED_LED_PWM_BIT,i);
+            tick10msDelay(1);
+        }
+        PWM_OFF(RED_LED_PWM_BIT);
+        
+        for(i=1; i<MAX_PWM_BLU; i++) {
+            PWM_ON(BLU_LED_PWM_BIT,i);
+            tick10msDelay(1);
+        }
+        PWM_OFF(BLU_LED_PWM_BIT);
+       
+        for(i=1; i<MAX_PWM_GRN; i++) {
+            PWM_ON(GRN_LED_PWM_BIT,i);
+            PWM_ON(BLU_LED_PWM_BIT,i);
+            tick10msDelay(1);
+        }
         PWM_OFF(GRN_LED_PWM_BIT);
         PWM_OFF(BLU_LED_PWM_BIT);
-        tick100msDelay(50);
+
+
     }
 
 } //END Main()
@@ -88,9 +157,13 @@ void SetUp(void)
     0b0101  = 125kHz    
     0b0000  = 31kHz
     *****************/
-    OSCCONbits.IRCF = 0;             // Internal oscillator set to 31kHz.  Config bits above select the internal oscillator.
+    OSCCONbits.IRCF = 6;             // Internal oscillator set to 31kHz.  Config bits above select the internal oscillator.
     
     /* PIN DIRECTIONS FOR LED OUTPUTS */
+    RED_LED = ledoff;
+    GRN_LED = ledoff;
+    BLU_LED = ledoff;
+
     TRISA2 = output;
     TRISA4 = output;
     TRISA5 = output;
