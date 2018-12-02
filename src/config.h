@@ -69,9 +69,11 @@
 * Maximum Grn Voltage = 3.2V
 * Maximum Blu Voltage = 3.2V
 */
-#define MAX_PWM_RED         70
-#define MAX_PWM_GRN         99
-#define MAX_PWM_BLU         99
+#define MAX_PWM_RED         50          // Since red can only handle a much smaller voltage, this PWM value is divided by two later on, but keeps the for loops equal
+#define MAX_PWM_GRN         50
+#define MAX_PWM_BLU         50
+#define MAX_PWM_ALL         50          // Need to update this number based on Red, Green, or Blue PWM values
+
 /* ALIASES FOR LED OUTPUT PINS */
 //TODO should be able to remove
 #define RED_LED             LATAbits.LATA2
@@ -79,8 +81,8 @@
 #define BLU_LED             LATAbits.LATA5
 
 /* PWM BIT ASSIGNMENTS */
-#define RED_LED_PWM_BIT     1           // This color attached to RA2 or PWM peripheral PWM 1              
+#define RED_LED_PWM_BIT     4           // This color attached to RA2 or PWM peripheral PWM 1              
 #define GRN_LED_PWM_BIT     3           // This color attached to RA4 or PWM peripheral PWM 3
-#define BLU_LED_PWM_BIT     4           // This color attached to RA5 or PWM peripheral PWM 4
+#define BLU_LED_PWM_BIT     1           // This color attached to RA5 or PWM peripheral PWM 4
 
 #endif

@@ -37,109 +37,67 @@ struct GlobalInformation gblinfo;
 
 void main()
 {
-    uint16_t i;                 // For loop counter
+    uint8_t pwm_val             = 0;                 // For loop counter
+    uint8_t initial_pwm_val     = 10;
     SetUp();
     
+    PWM_OFF(GRN_LED_PWM_BIT);
+    PWM_OFF(RED_LED_PWM_BIT);
+    PWM_OFF(BLU_LED_PWM_BIT);
+    
+    // Setup for soft glow
+    PWM_ON(GRN_LED_PWM_BIT,initial_pwm_val);
+    PWM_ON(RED_LED_PWM_BIT,initial_pwm_val);
+    
     while (true) {
-        //Control all three with PWM
-        // PWM_ON(RED_LED_PWM_BIT,10);
-        // PWM_ON(GRN_LED_PWM_BIT,10);
-        // PWM_ON(BLU_LED_PWM_BIT,10);
-        // tick100msDelay(50);
-
-        // PWM_ON(RED_LED_PWM_BIT,20);
-        // PWM_ON(GRN_LED_PWM_BIT,20);
-        // PWM_ON(BLU_LED_PWM_BIT,20);
-        // tick100msDelay(50);
-
-        // PWM_ON(RED_LED_PWM_BIT,50);
-        // PWM_ON(GRN_LED_PWM_BIT,50);
-        // PWM_ON(BLU_LED_PWM_BIT,50);
-        // tick100msDelay(50);
-
-        // // Verify we have control and can shut various ones off
-        // PWM_ON(RED_LED_PWM_BIT,10);
-        // PWM_OFF(GRN_LED_PWM_BIT);
-        // PWM_OFF(BLU_LED_PWM_BIT);
-        // tick100msDelay(50);
         
-        // PWM_ON(GRN_LED_PWM_BIT,10);
-        // PWM_OFF(RED_LED_PWM_BIT);
-        // PWM_OFF(BLU_LED_PWM_BIT);
-        // tick100msDelay(50);
-        
-        // PWM_ON(BLU_LED_PWM_BIT,10);
-        // PWM_OFF(GRN_LED_PWM_BIT);
-        // PWM_OFF(RED_LED_PWM_BIT);
-        // tick100msDelay(50);
-
-        // PWM_ON(GRN_LED_PWM_BIT,5);
-        // tick100msDelay(10);
-        // PWM_ON(GRN_LED_PWM_BIT,10);
-        // tick100msDelay(10);
-        // PWM_ON(GRN_LED_PWM_BIT,15);
-        // tick100msDelay(10);
-        // PWM_ON(GRN_LED_PWM_BIT,20);
-        // tick100msDelay(10);
-        // PWM_ON(GRN_LED_PWM_BIT,25);
-        // tick100msDelay(10);
-        // PWM_OFF(GRN_LED_PWM_BIT);
-        
-        // PWM_ON(RED_LED_PWM_BIT,5);
-        // tick100msDelay(10);
-        // PWM_ON(RED_LED_PWM_BIT,10);
-        // tick100msDelay(10);
-        // PWM_ON(RED_LED_PWM_BIT,15);
-        // tick100msDelay(10);
-        // PWM_ON(RED_LED_PWM_BIT,20);
-        // tick100msDelay(10);
-        // PWM_ON(RED_LED_PWM_BIT,25);
-        // tick100msDelay(10);
-        // PWM_OFF(RED_LED_PWM_BIT);
-        
-        // PWM_ON(BLU_LED_PWM_BIT,5);
-        // tick100msDelay(10);
-        // PWM_ON(BLU_LED_PWM_BIT,10);
-        // tick100msDelay(10);
-        // PWM_ON(BLU_LED_PWM_BIT,15);
-        // tick100msDelay(10);
-        // PWM_ON(BLU_LED_PWM_BIT,20);
-        // tick100msDelay(10);
-        // PWM_ON(BLU_LED_PWM_BIT,25);
-        // tick100msDelay(10);
-        // PWM_OFF(BLU_LED_PWM_BIT);
-
-        PWM_OFF(GRN_LED_PWM_BIT);
-        PWM_OFF(RED_LED_PWM_BIT);
-        PWM_OFF(BLU_LED_PWM_BIT);
-        
-        for(i=1;i<MAX_PWM_GRN;i++) {
-            PWM_ON(GRN_LED_PWM_BIT,i);
+        // Quick 'flicker' up
+        for(pwm_val = initial_pwm_val; pwm_val < 30; pwm_val++) {
+            PWM_ON(GRN_LED_PWM_BIT,pwm_val);
+            PWM_ON(RED_LED_PWM_BIT,pwm_val);
             tick10msDelay(1);
         }
-        PWM_OFF(GRN_LED_PWM_BIT);
         
-        for(i=1;i<MAX_PWM_RED;i++) {
-            PWM_ON(RED_LED_PWM_BIT,i);
+        // Ramdon Delay
+        // tick10msDelay(1);
+
+        // Quick 'flicker' dwn
+        for(pwm_val = pwm_val; pwm_val > initial_pwm_val; pwm_val-=2) {
+            PWM_ON(GRN_LED_PWM_BIT,pwm_val);
+            PWM_ON(RED_LED_PWM_BIT,pwm_val);
             tick10msDelay(1);
         }
-        PWM_OFF(RED_LED_PWM_BIT);
+
+        // Ramdon Delay
+        // tick10msDelay(2);
+
+        // Quick 'flicker' up 2
+        for(pwm_val = initial_pwm_val; pwm_val < 55; pwm_val++) {
+            PWM_ON(GRN_LED_PWM_BIT,pwm_val);
+            PWM_ON(RED_LED_PWM_BIT,pwm_val);
+            tick10msDelay(2);
+        }
         
-        for(i=1; i<MAX_PWM_BLU; i++) {
-            PWM_ON(BLU_LED_PWM_BIT,i);
+        // Ramdon Delay
+        // tick10msDelay(2);
+
+        // Quick 'flicker' dwn
+        for(pwm_val = pwm_val; pwm_val > initial_pwm_val; pwm_val-=2) {
+            PWM_ON(GRN_LED_PWM_BIT,pwm_val);
+            PWM_ON(RED_LED_PWM_BIT,pwm_val);
             tick10msDelay(1);
         }
-        PWM_OFF(BLU_LED_PWM_BIT);
-       
-        for(i=1; i<MAX_PWM_GRN; i++) {
-            PWM_ON(GRN_LED_PWM_BIT,i);
-            PWM_ON(BLU_LED_PWM_BIT,i);
-            tick10msDelay(1);
-        }
-        PWM_OFF(GRN_LED_PWM_BIT);
-        PWM_OFF(BLU_LED_PWM_BIT);
-
-
+        
+        // Ramdon Delay
+        // tick10msDelay(3);
+        
+        // // Quick 'flicker' up 2
+        // for(pwm_val = initial_pwm_val; pwm_val < 60; pwm_val++) {
+        //     PWM_ON(GRN_LED_PWM_BIT,pwm_val);
+        //     PWM_ON(RED_LED_PWM_BIT,pwm_val);
+        //     tick10msDelay(2);
+        // }
+    
     }
 
 } //END Main()
@@ -185,17 +143,17 @@ void SetUp(void)
     Timer0On();             
 }
 
-void tick100msDelay(uint16_t ticks)
-{
-    uint16_t i = 0;
-    uint16_t tick = 0; //Used to lock time value
-    for (i = ticks; i > 0; i--)
-    {
-        tick = gblinfo.tick100ms;
-        while (tick == gblinfo.tick100ms)
-            ; //Wait for time to wrap around (in one half tick1000mond)
-    }
-}
+// void tick100msDelay(uint16_t ticks)
+// {
+//     uint16_t i = 0;
+//     uint16_t tick = 0; //Used to lock time value
+//     for (i = ticks; i > 0; i--)
+//     {
+//         tick = gblinfo.tick100ms;
+//         while (tick == gblinfo.tick100ms)
+//             ; //Wait for time to wrap around (in one half tick1000mond)
+//     }
+// }
 
 void tick10msDelay(uint16_t ticks)
 {

@@ -37,7 +37,7 @@
 *POSTCONDITION: tick100ms * 1/10s of a tick1000mond have passed.
 *RETURN: Nothing
 ********************************************************/
-void tick100msDelay( uint16_t ticks );
+// void tick100msDelay( uint16_t ticks );
 
 /********************************************************
 *FUNCTION: void tick10msDelay( uint16_t ticks )
