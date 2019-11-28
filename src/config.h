@@ -1,29 +1,29 @@
 /******************************************************************************
-*   FILE: config.h
-*
-*   PURPOSE: Configuration file specific to the processor being used and the 
-*           underlying hardware. 
-*
-*   DEVICE: pic12lf1501
-*
-*   COMPILER: Microchip XC8 v2.0
-*
-*   IDE: MPLAB X v5.10
-*
-*   TODO:  
-*
-*   NOTE:
-*
+ *   FILE: config.h
+ *
+ *   PURPOSE: Configuration file specific to the processor being used and the 
+ *           underlying hardware. 
+ *
+ *   DEVICE: pic12lf1501
+ *
+ *   COMPILER: Microchip XC8 v2.0
+ *
+ *   IDE: MPLAB X v5.10
+ *
+ *   TODO:  
+ *
+ *   NOTE:
+ *
 ******************************************************************************/
-#ifndef __CONFIG_H_
-#define __CONFIG_H_
+#ifndef __CONFIG_H
+#define __CONFIG_H
 
+#include <xc.h>
 #include <stdint.h>
 #include <stdbool.h>
-#include <xc.h>
 
 /* MCU CRITICAL PARAMETERS */
-#define OSC                            250000                   // Internal oscillator selected and IRCF set for 31kHz
+#define OSC                            8000000                  // Internal oscillator selected and FOSC<2:0> set to select HFINTOSC (8MHz) -- p45
 #define MCU_TOSC                       1/OSC                    // Period of oscillator timer
 #define OSC_DIV4                       (OSC/4.0)                //Instruction clock is oscillator frequency / 4
 
@@ -33,28 +33,13 @@
 #define BUGVER                          0x01
 
 /* REGISTER VALUES FOR 10MS TIME BASE */         
-#define TMR0_INTUP_SETTING  1                                                           // 1 = Caused interrupts, 0 = do not cause interrupts
-#define TMR0_PRESCALER      16.0                                                        // Options are 1, 2, 4, 8, 16, 32, 128, or 256
-#define TMR0_INC_FREQ       (OSC_DIV4/TMR0_PRESCALER)                                   // Effective rate at which the timer increments
-#define HEART_BEAT_MS       10.0                                                        // Interrupt every this many (mili-seconds)
-#define TMR0_TICKS          ((HEART_BEAT_MS/1000.0)*TMR0_INC_FREQ)                      // How many timer ticks between interrupts
-// #define TMR0_REG_SETTING    (uint8_t)(256-TMR0_TICKS)                                   // Value to be loaded into the 8-bit register
-#define TMR0_REG_SETTING    217                                   // Value to be loaded into the 8-bit register
-
-/* PREPROCESSOR CALCULATIONS FOR PWM */
-#define TMR2_PRESCALER      4.0                                                         // Options are 1, 4, 16, 64
-#define PWM_FREQ            120.0
-#define PWM_PR2             (uint8_t)((1/(PWM_FREQ*4*MCU_TOSC*TMR2_PRESCALER))-1)
-
-// Since we know the duty cycle ratio equation is represented by 
-// Duty_Cycle_Ratio / 100 * 4 * (PR2 + 1) = REG_HIGH : REG_LOW
-// we can allow the preprocessor to calculate (4 * (PR2 + 1))/100
-// The value of 100 is in there so that we can pass integers into 
-// the equation (i.e. 50 vs. 0.50)
-// With the above, in the application we calculate the register values 
-// via Duty_Cycle_Ratio * PWM_DUTY_CONSTANT = REG_HIGH : REG_LOW
-#define PWM_DUTY_CONSTANT   (uint16_t)((4*(PWM_PR2+1))/100)
-
+#define TMR0_INTUP_SETTING  1                                           // 1 = Caused interrupts, 0 = do not cause interrupts
+#define TMR0_PRESCALER      64.0                                        // Options are 1, 2, 4, 8, 16, 32, 64, 128, or 256
+#define TMR0_INC_FREQ       (OSC_DIV4/TMR0_PRESCALER)                   // Effective rate at which the timer increments
+#define HEART_BEAT_MS       1.0                                         // Interrupt every this many (mili-seconds)
+#define TMR0_TICKS          ((HEART_BEAT_MS/1000.0)*TMR0_INC_FREQ)      // How many timer ticks between interrupts
+#define TMR0_REG_SETTING    (uint8_t)(256-TMR0_TICKS)                   // Value to be loaded into the 8-bit register
+// #define TMR0_REG_SETTING    217                                      // Value to be loaded into the 8-bit register
 
 /* DEFINE VARIOUS PIN FUNCTIONS */
 #define output              0           // Define the output pin direction setting
@@ -64,25 +49,16 @@
 #define ledon               1
 #define ledoff              0
 
-/***************
-* Maximum Red Voltage = 2.0V
-* Maximum Grn Voltage = 3.2V
-* Maximum Blu Voltage = 3.2V
-*/
-#define MAX_PWM_RED         50          // Since red can only handle a much smaller voltage, this PWM value is divided by two later on, but keeps the for loops equal
-#define MAX_PWM_GRN         50
-#define MAX_PWM_BLU         50
-#define MAX_PWM_ALL         50          // Need to update this number based on Red, Green, or Blue PWM values
+/*
+ * Maximum Red Voltage = 2.0V
+ * Maximum Grn Voltage = 3.2V
+ * Maximum Blu Voltage = 3.2V
+ */
+#define PWM_FULL_COUNT          18
 
 /* ALIASES FOR LED OUTPUT PINS */
-//TODO should be able to remove
-#define RED_LED             LATAbits.LATA2
-#define GRN_LED             LATAbits.LATA4
-#define BLU_LED             LATAbits.LATA5
-
-/* PWM BIT ASSIGNMENTS */
-#define RED_LED_PWM_BIT     4           // This color attached to RA2 or PWM peripheral PWM 1              
-#define GRN_LED_PWM_BIT     3           // This color attached to RA4 or PWM peripheral PWM 3
-#define BLU_LED_PWM_BIT     1           // This color attached to RA5 or PWM peripheral PWM 4
+#define RED_LED                 RC5
+#define GRN_LED                 RC3
+#define BLU_LED                 RC4
 
 #endif

@@ -15,78 +15,138 @@
 *
 ******************************************************************************/
 
-#include "main.h" //Include header file associated with main.c
+#include "main.h" 
 
-// CONFIG1
-#pragma config FOSC = INTOSC    // Oscillator Selection Bits (INTOSC oscillator: I/O function on CLKIN pin)
-#pragma config WDTE = OFF       // Watchdog Timer Enable (WDT disabled)
-#pragma config PWRTE = ON       // Power-up Timer Enable (PWRT enabled)
-#pragma config MCLRE = ON       // MCLR Pin Function Select (MCLR/VPP pin function is MCLR)
-#pragma config CP = OFF         // Flash Program Memory Code Protection (Program memory code protection is disabled)
-#pragma config BOREN = ON       // Brown-out Reset Enable (Brown-out Reset enabled)
-#pragma config CLKOUTEN = OFF   // Clock Out Enable (CLKOUT function is disabled. I/O or oscillator function on the CLKOUT pin)
-
-// CONFIG2
-#pragma config WRT = OFF        // Flash Memory Self-Write Protection (Write protection off)
-#pragma config STVREN = ON      // Stack Overflow/Underflow Reset Enable (Stack Overflow or Underflow will cause a Reset)
-#pragma config BORV = LO        // Brown-out Reset Voltage Selection (Brown-out Reset Voltage (Vbor), low trip point selected.)
-#pragma config LPBOR = OFF      // Low-Power Brown Out Reset (Low-Power BOR is disabled)
-#pragma config LVP = ON         // Low-Voltage Programming Enable (Low-voltage programming enabled)
+// CONFIG
+#pragma config FOSC = INTRCIO   // Oscillator Selection bits (INTOSCIO oscillator: I/O function on RA4/OSC2/CLKOUT pin, I/O function on RA5/OSC1/CLKIN)
+#pragma config WDTE = OFF       // Watchdog Timer Enable bit (WDT disabled and can be enabled by SWDTEN bit of the WDTCON register)
+#pragma config PWRTE = ON       // Power-up Timer Enable bit (PWRT enabled)
+#pragma config MCLRE = ON       // MCLR Pin Function Select bit (MCLR pin function is MCLR)
+#pragma config CP = OFF         // Code Protection bit (Program memory code protection is disabled)
+#pragma config CPD = OFF        // Data Code Protection bit (Data memory code protection is disabled)
+#pragma config BOREN = ON       // Brown-out Reset Selection bits (BOR enabled)
+#pragma config IESO = ON        // Internal External Switchover bit (Internal External Switchover mode is enabled)
+#pragma config FCMEN = ON       // Fail-Safe Clock Monitor Enabled bit (Fail-Safe Clock Monitor is enabled)
 
 struct GlobalInformation gblinfo;
 
 void main()
 {
-    uint8_t pwm_val             = 0;                 // For loop counter
-    uint8_t initial_pwm_val     = 10;
+    uint8_t main_sec_ctr    = 0;
+    
+    uint8_t red_pwm_lvl     = 0;
+    uint8_t red_pwm_ctr     = 0;
+
+    uint8_t grn_pwm_lvl     = 0;
+    uint8_t grn_pwm_ctr     = 0;
+
+    uint8_t blu_pwm_lvl     = 0;
+    uint8_t blu_pwm_ctr     = 0;
+    
+    // uint8_t pwm_val             = 0;                 // For loop counter
+    // uint8_t initial_pwm_val     = 10;
     SetUp();
     
-    PWM_OFF(GRN_LED_PWM_BIT);
-    PWM_OFF(RED_LED_PWM_BIT);
-    PWM_OFF(BLU_LED_PWM_BIT);
+    // PWM_OFF(GRN_LED_PWM_BIT);
+    // PWM_OFF(RED_LED_PWM_BIT);
+    // PWM_OFF(BLU_LED_PWM_BIT);
     
     // Setup for soft glow
-    PWM_ON(GRN_LED_PWM_BIT,initial_pwm_val);
-    PWM_ON(RED_LED_PWM_BIT,initial_pwm_val);
+    // PWM_ON(GRN_LED_PWM_BIT,initial_pwm_val);
+    // PWM_ON(RED_LED_PWM_BIT,initial_pwm_val);
+
+    red_pwm_lvl = 6;
+    grn_pwm_lvl = 0;
+    blu_pwm_lvl = 0;
+
+    // RED_LED = ledon;
     
     while (true) {
         
-        // Quick 'flicker' up
-        for(pwm_val = initial_pwm_val; pwm_val < 30; pwm_val++) {
-            PWM_ON(GRN_LED_PWM_BIT,pwm_val);
-            PWM_ON(RED_LED_PWM_BIT,pwm_val);
-            tick10msDelay(1);
+        if(gblinfo.event1ms) {
+            gblinfo.event1ms = false;
+
+            red_pwm_ctr < red_pwm_lvl ? (RED_LED = ledon) : (RED_LED = ledoff);
+            grn_pwm_ctr < grn_pwm_lvl ? (GRN_LED = ledon) : (GRN_LED = ledoff);
+            blu_pwm_ctr < blu_pwm_lvl ? (BLU_LED = ledon) : (BLU_LED = ledoff);
+
+            red_pwm_ctr > PWM_FULL_COUNT ? (red_pwm_ctr = 0) : (red_pwm_ctr++);
+            grn_pwm_ctr > PWM_FULL_COUNT ? (grn_pwm_ctr = 0) : (grn_pwm_ctr++);
+            blu_pwm_ctr > PWM_FULL_COUNT ? (blu_pwm_ctr = 0) : (blu_pwm_ctr++);
         }
+        
+        if(gblinfo.event5ms) {
+            gblinfo.event5ms = false;
+        }
+        
+        if(gblinfo.event10ms) {
+            gblinfo.event10ms = false;
+        }
+        
+        if(gblinfo.event100ms) {
+            gblinfo.event100ms = false;
+            
+            main_sec_ctr > 9 ? (main_sec_ctr = 0) : (main_sec_ctr++);
+
+            if(main_sec_ctr < 3) {
+                red_pwm_lvl = 6;
+                grn_pwm_lvl = 0;
+                blu_pwm_lvl = 0;
+            }
+            else if(main_sec_ctr >= 3 && main_sec_ctr < 6) {
+                red_pwm_lvl = 0;
+                grn_pwm_lvl = 6;
+                blu_pwm_lvl = 0;
+            }
+            else {
+                red_pwm_lvl = 0;
+                grn_pwm_lvl = 0;
+                blu_pwm_lvl = 6;
+            }
+
+        }
+
+
+        
+        
+        
+        
+        // // Quick 'flicker' up
+        // for(pwm_val = initial_pwm_val; pwm_val < 30; pwm_val++) {
+        //     PWM_ON(GRN_LED_PWM_BIT,pwm_val);
+        //     PWM_ON(RED_LED_PWM_BIT,pwm_val);
+        //     tick10msDelay(1);
+        // }
         
         // Ramdon Delay
         // tick10msDelay(1);
 
         // Quick 'flicker' dwn
-        for(pwm_val = pwm_val; pwm_val > initial_pwm_val; pwm_val-=2) {
-            PWM_ON(GRN_LED_PWM_BIT,pwm_val);
-            PWM_ON(RED_LED_PWM_BIT,pwm_val);
-            tick10msDelay(1);
-        }
+        // for(pwm_val = pwm_val; pwm_val > initial_pwm_val; pwm_val-=2) {
+        //     PWM_ON(GRN_LED_PWM_BIT,pwm_val);
+        //     PWM_ON(RED_LED_PWM_BIT,pwm_val);
+        //     tick10msDelay(1);
+        // }
 
         // Ramdon Delay
         // tick10msDelay(2);
 
         // Quick 'flicker' up 2
-        for(pwm_val = initial_pwm_val; pwm_val < 55; pwm_val++) {
-            PWM_ON(GRN_LED_PWM_BIT,pwm_val);
-            PWM_ON(RED_LED_PWM_BIT,pwm_val);
-            tick10msDelay(2);
-        }
+        // for(pwm_val = initial_pwm_val; pwm_val < 55; pwm_val++) {
+        //     PWM_ON(GRN_LED_PWM_BIT,pwm_val);
+        //     PWM_ON(RED_LED_PWM_BIT,pwm_val);
+        //     tick10msDelay(2);
+        // }
         
         // Ramdon Delay
         // tick10msDelay(2);
 
         // Quick 'flicker' dwn
-        for(pwm_val = pwm_val; pwm_val > initial_pwm_val; pwm_val-=2) {
-            PWM_ON(GRN_LED_PWM_BIT,pwm_val);
-            PWM_ON(RED_LED_PWM_BIT,pwm_val);
-            tick10msDelay(1);
-        }
+        // for(pwm_val = pwm_val; pwm_val > initial_pwm_val; pwm_val-=2) {
+        //     PWM_ON(GRN_LED_PWM_BIT,pwm_val);
+        //     PWM_ON(RED_LED_PWM_BIT,pwm_val);
+        //     tick10msDelay(1);
+        // }
         
         // Ramdon Delay
         // tick10msDelay(3);
@@ -105,38 +165,46 @@ void main()
 void SetUp(void)
 {
     // Clock / Timing configuration
-    /******************
-    Multiple options on page 53, but some listed here
-    0b1111  = 16MHz
-    0b1101  = 4MHz
-    0b1011  = 1MHz
-    0b0111  = 500kHz    (Defult upon reset)
-    0b0110  = 250KHz    
-    0b0101  = 125kHz    
-    0b0000  = 31kHz
-    *****************/
-    OSCCONbits.IRCF = 6;             // Internal oscillator set to 31kHz.  Config bits above select the internal oscillator.
+    /*
+     * Multiple options on page 46, but some listed here
+     * 0b111  = 8MHz
+     * 0b110  = 4MHz    (Defult upon reset)
+     * 0b101  = 2MHz
+     * 0b100  = 1MHz    
+     * 0b011  = 500kHz    
+     * 0b010  = 250kHz
+     * 0b001  = 125kHz    
+     * 0b000  = 31kHz   (LFINTOSC)
+     */
+    OSCCONbits.IRCF = 7;             // Internal oscillator set to 8MHz. 
     
-    /* PIN DIRECTIONS FOR LED OUTPUTS */
-    RED_LED = ledoff;
-    GRN_LED = ledoff;
-    BLU_LED = ledoff;
+    /* Pin directions for pins tied to LED outputs */
+    // RED_LED = ledoff;
+    // GRN_LED = ledoff;
+    // BLU_LED = ledoff;
 
-    TRISA2 = output;
-    TRISA4 = output;
-    TRISA5 = output;
+    TRISC5 = output;                    // Red LED
+    TRISC3 = output;                    // Green LED
+    TRISC4 = output;                    // Blue LED
     
     Init_Interrupts();                  //Set up interrupts  
 
-    gblinfo.tick10ms = 0;       // Initialize 100s of a tick1000mond counter to 0
-    gblinfo.tick100ms = 0;      // Initialize 100s of a tick1000mond counter to 0
-    gblinfo.tick1000ms = 0;     // Seconds counter
+    gblinfo.tick1ms     = 0;            // Initialize 100s of a tick1000mond counter to 0
+    gblinfo.tick5ms     = 0;            // Initialize 100s of a tick1000mond counter to 0
+    gblinfo.tick10ms    = 0;            // Initialize 100s of a tick1000mond counter to 0
+    gblinfo.tick100ms   = 0;            // Initialize 100s of a tick1000mond counter to 0
+    gblinfo.tick1000ms  = 0;            // Seconds counter
 
-    /* DISABLE ANALOG CHANNELS */
-    ANSELA = 0x00;          // Disable analog channels to select digital IO function.  p103
+    gblinfo.event1ms    = false;
+    gblinfo.event5ms    = false;
+    gblinfo.event10ms   = false;
+    gblinfo.event100ms  = false;
+
+    /* Disable analog channels */
+    ANSEL = 0x00;                  // Disable analog channels to select digital IO function.  p116
 
     /* CONFIGURE PWM */ 
-    InitPWM();
+    // InitPWM();
 
     /* TIMER FOR APPLICATION INTERRUPTS */
     Timer0Init(TMR0_INTUP_SETTING, TMR0_PRESCALER); // interrupts = yes, prescaler = 16, clksource = FOSC/4 

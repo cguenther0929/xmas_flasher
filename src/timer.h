@@ -15,8 +15,8 @@
 *
 ******************************************************************************/
 
-#ifndef __TIMER_H_
-#define __TIMER_H_
+#ifndef __TIMER_H
+#define __TIMER_H
 
 #include <xc.h>                 //Part specific header file
 #include <stdint.h>
@@ -41,10 +41,6 @@ void Timer0Init(uint8_t interrupts, uint16_t prescaler) ;
 *RETURN: Nothing
 ********************************************************/
 void Timer0On( void );
-
-void Timer2Init(uint8_t prescaler);  //TODO comment
-
-void Timer2On ( void ); //TODO comment
 
 #endif
 /* END OF FILE */

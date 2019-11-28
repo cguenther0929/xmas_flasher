@@ -14,8 +14,8 @@
 *   NOTE:
 *
 ******************************************************************************/
-#ifndef __STRUCT_H_
-#define __STRUCT_H_
+#ifndef __STRUCT_H
+#define __STRUCT_H
 
 #include <xc.h>
 #include <stdint.h>
@@ -24,9 +24,16 @@
 
 extern struct GlobalInformation         //  Structure to pass information that is shared among modules
 {
-    uint16_t    tick10ms;               // Increases every 50mili tick1000monds 
-    uint16_t    tick100ms;              // Used to keep track of passing deci-tick1000monds
-    uint16_t    tick1000ms;             // Use this to tick tick1000monds -- might not be used for audio interface board
+    uint16_t    tick1ms;                // Increases every 1ms
+    uint16_t    tick5ms;                // Increases every 5ms
+    uint16_t    tick10ms;               // Increases every 10ms  
+    uint16_t    tick100ms;              // Increases every 100ms
+    uint16_t    tick1000ms;             // Increases every 1000ms
+    
+    bool        event1ms;               // Flag set to true every 1ms
+    bool        event5ms;               // Flag set to true every 5ms
+    bool        event10ms;              // Flag set to true every 10ms
+    bool        event100ms;            // Flag set to true every 1000ms
 
 } GlobalInformation;
 

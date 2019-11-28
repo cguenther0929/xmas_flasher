@@ -21,55 +21,60 @@
 struct GlobalInformation gblinfo;
 
 void Init_Interrupts( void ) {
-    GIE     = 1;                //p68
+    GIE     = 1;                // p37 of 298
 }
 
 
 
 void __interrupt () my_isr_routine (void) {  
     
-    if(TMR0IF){                                     //Timer 1 interrupt
+    if(T0IF){                                     //Timer 1 interrupt
         TMR0 = TMR0_REG_SETTING;
-        
-        Events10ms();
-        
-        if(gblinfo.tick10ms >= 9) {
-            gblinfo.tick10ms = 0;               //Reset centi-tick1000monds
-            Events100ms();
-            if(gblinfo.tick100ms >= 9) {         //Once Second Reached
-                gblinfo.tick100ms = 0;           //Reset 100 milliseconds ounter
-                Events1000ms();                 //Look at events that are to happen every 1s
-                if(gblinfo.tick1000ms >= 59)                     //We've ticked away one minute, so reset
-                    gblinfo.tick1000ms = 0;                      //Reset seconds counter
-                else
-                    gblinfo.tick1000ms += 1;                     //Increment seconds counter
+        gblinfo.event1ms = true;
+
+        if(gblinfo.tick1ms > 4) {
+            gblinfo.tick1ms = 0;
+            gblinfo.event5ms = true;
+            
+            if (gblinfo.tick5ms >= 1)
+            {
+                gblinfo.tick5ms = 0;               
+                gblinfo.event10ms = true;
+                
+                if(gblinfo.tick10ms >= 9) {
+                    gblinfo.tick10ms = 0;            
+                    gblinfo.event100ms = true;
+                    
+                    if(gblinfo.tick100ms >= 9) {        
+                        gblinfo.tick100ms = 0;           
+                        
+                        if(gblinfo.tick1000ms >= 59)                    
+                            gblinfo.tick1000ms = 0;                     
+                        else
+                            gblinfo.tick1000ms += 1;                    
+                    }
+                    else {
+                        gblinfo.tick100ms += 1;                         
+                    }
+                }
+                else {
+                    gblinfo.tick10ms += 1;                              
+                }
             }
             else {
-                 gblinfo.tick100ms += 1;                         //Increment 100 millisecond timer 
+                gblinfo.tick5ms++;
+
             }
         }
         else {
-            gblinfo.tick10ms += 1;                               //Increment 1 millisecond timer
+            gblinfo.tick1ms++;
         }
 
-        TMR0IF = 0;                         //Software is responsible for clearing this flag
+        T0IF = 0;                         //Software is responsible for clearing this flag
     }   /* END IF FOR TMR1IF */
     
 
 }
-
-void Events10ms(void) {                  //Keep routine slim!
-
-}
-
-void Events100ms(void) {                //Keep routine slim!
-    
-}
-
-void Events1000ms(void) {
-
-}
-
 
 void DisableInterrupts( void ) {
     GIE     = 0;                //p68

@@ -1,7 +1,7 @@
 # List of folders & file names/extensions to be ignored by the git repository.
 src/stdbool.h
 src/stdint.h
-src/pic12lf1501.h
+src/pic16f685.h
 
 XMAS_FLASHER.X/funclist
 XMAS_FLASHER.X/l.obj

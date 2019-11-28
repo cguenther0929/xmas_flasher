@@ -1,62 +1,55 @@
 /******************************************************************************
-*   FILE: main.h
-*
-*   PURPOSE: Header file for main.c
-*
-*   DEVICE: PIC18F66K22
-*
-*   COMPILER: Microchip XC8 v2.0
-*
-*   IDE: MPLAB X v5.10
-*
-*   TODO:  
-*
-*   NOTE:
-*
+ *   FILE: 
+ *          main.h
+ *
+ *   PURPOSE:
+ *          Header file for main.c. Target device PIC16F685T-I/SS
+ *
+ *   TODO:
+ *
+ *   NOTE:
+ *
 ******************************************************************************/
-#ifndef __MAIN_H_
-#define __MAIN_H_
 
-#include <xc.h>         //Part specific header file
+#ifndef __MAIN_H
+#define __MAIN_H
+
+#include <xc.h>         
 #include <stdint.h>
 #include <stdbool.h>
 #include <stdlib.h>
 #include "struct.h"
 #include "isr.h"
-#include "config.h"     //Project specific header file
+#include "config.h"     
 #include "timer.h"
-#include "pwm.h"
 
 
-/********************************************************
-*FUNCTION: void tick100msDelay( uint16_t ticks )
-*PURPOSE: Much more accurate timer that works off interrupts
-            User must define how many 1/10s of a tick1000mond he/she
-            wishes to pass
-*PRECONDITION: Timers must be set up and running in order for this to work
-*POSTCONDITION: tick100ms * 1/10s of a tick1000mond have passed.
-*RETURN: Nothing
-********************************************************/
-// void tick100msDelay( uint16_t ticks );
+// void tick100msDelay( uint16_t ticks );  //TODO could probably use this
 
-/********************************************************
-*FUNCTION: void tick10msDelay( uint16_t ticks )
-*PURPOSE: Much more accurate timer that works off interrupts
-            User passes in how many 1/50s he/she wishes to pass 
-*PRECONDITION: Timer0 set up and running and set to interrupt
-*POSTCONDITION: Blocking delay inserted
-*RETURN: Nothing
-********************************************************/
+/*
+ * Function:  void tick10msDelay( uint16_t ticks );
+ * --------------------
+ * Blocking delay function.  Blocks in increments 
+ * of 10ms chunks.  Number of "chunks" depends on 
+ * "ticks" value passed to function.  This timing 
+ * routine is fairly accurate as it uses a timer
+ * w/ interrupts to count.  Timebase must first
+ * be configured via SetUp function.    
+ *
+ * returns: Nothing 
+ */
 void tick10msDelay( uint16_t ticks );
 
-
-/********************************************************
-*FUNCTION: void SetUp( void );
-*PURPOSE: Set up the PIC I/O and etc...
-*PRECONDITION: PIC not configured
-*POSTCONDITION: PIC I/O Configured
-*RETURN: Nothing
-********************************************************/
+/*
+ * Function:  void SetUp( void );
+ * --------------------
+ * SetUp routine covering all aspects of the application. 
+ * Processor GPIOs are configured.  Peripherials are 
+ * configured.  ADC is configured.  System timebase 
+ * and general timing parameters are configured.  
+ *
+ * returns: Nothing 
+ */
 void SetUp( void );
 
 #endif
