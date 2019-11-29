@@ -48,6 +48,8 @@ void __interrupt () my_isr_routine (void) {
                     if(gblinfo.tick100ms >= 9) {        
                         gblinfo.tick100ms = 0;           
                         
+                        gblinfo.event1000ms = true;
+                        
                         if(gblinfo.tick1000ms >= 59)                    
                             gblinfo.tick1000ms = 0;                     
                         else

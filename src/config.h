@@ -22,6 +22,16 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+/* Define States */
+typedef enum
+{
+    state_1,
+    state_2,
+    state_3,
+    state_4
+}State;
+
+
 /* MCU CRITICAL PARAMETERS */
 #define OSC                            8000000                  // Internal oscillator selected and FOSC<2:0> set to select HFINTOSC (8MHz) -- p45
 #define MCU_TOSC                       1/OSC                    // Period of oscillator timer
@@ -38,8 +48,8 @@
 #define TMR0_INC_FREQ       (OSC_DIV4/TMR0_PRESCALER)                   // Effective rate at which the timer increments
 #define HEART_BEAT_MS       1.0                                         // Interrupt every this many (mili-seconds)
 #define TMR0_TICKS          ((HEART_BEAT_MS/1000.0)*TMR0_INC_FREQ)      // How many timer ticks between interrupts
-#define TMR0_REG_SETTING    (uint8_t)(256-TMR0_TICKS)                   // Value to be loaded into the 8-bit register
-// #define TMR0_REG_SETTING    217                                      // Value to be loaded into the 8-bit register
+// #define TMR0_REG_SETTING    (uint8_t)(256-TMR0_TICKS)                // Value to be loaded into the 8-bit register
+#define TMR0_REG_SETTING    230                                         // Empirically derived value 
 
 /* DEFINE VARIOUS PIN FUNCTIONS */
 #define output              0           // Define the output pin direction setting
@@ -48,6 +58,11 @@
 /* LED CONTROL */
 #define ledon               1
 #define ledoff              0
+
+/* To make a fire color, the breakdown is as follows */
+#define RED_PWM_PERCENT     0.65
+#define GRN_PWM_PERCENT     0.30
+#define BLU_PWM_PERCENT     0.05
 
 /*
  * Maximum Red Voltage = 2.0V

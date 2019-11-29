@@ -33,7 +33,8 @@ extern struct GlobalInformation         //  Structure to pass information that i
     bool        event1ms;               // Flag set to true every 1ms
     bool        event5ms;               // Flag set to true every 5ms
     bool        event10ms;              // Flag set to true every 10ms
-    bool        event100ms;            // Flag set to true every 1000ms
+    bool        event100ms;             // Flag set to true every 100ms
+    bool        event1000ms;            // Flag set to true every 1000ms
 
 } GlobalInformation;
 

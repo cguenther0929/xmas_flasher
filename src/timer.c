@@ -30,7 +30,7 @@ void Timer0On( void ){
 }
 
 void Timer0Init(uint8_t interrupts, uint16_t prescaler) {
-    T0IF       = 0;                // Reset the overflow bit  TODO
+    T0IF       = 0;                // Reset the overflow bit
     
     switch(interrupts){
         case 0:
