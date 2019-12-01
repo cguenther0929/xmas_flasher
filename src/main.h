@@ -24,8 +24,6 @@
 #include "timer.h"
 
 
-// void tick100msDelay( uint16_t ticks );  //TODO could probably use this
-
 /*
  * Function:  void tick10msDelay( uint16_t ticks );
  * --------------------
@@ -38,7 +36,7 @@
  *
  * returns: Nothing 
  */
-void tick10msDelay( uint16_t ticks );
+// void tick10msDelay( uint16_t ticks );
 
 /*
  * Function:  void SetUp( void );

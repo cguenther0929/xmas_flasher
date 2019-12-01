@@ -1,18 +1,14 @@
 /******************************************************************************
-*   FILE: struct.h
-*
-*   PURPOSE: Structures used throughout the code base are defined here.  
-*
-*   DEVICE: PPIC18F66K22
-*
-*   COMPILER: Microchip XC8 v2.0
-*
-*   IDE: MPLAB X v5.10
-*
-*   TODO:  
-*
-*   NOTE:
-*
+ *   FILE: 
+ *          struct.h
+ *
+ *   PURPOSE:
+ *          Structures used throughout the code base are defined here.  
+ *
+ *   TODO:
+ *
+ *   NOTE:
+ *
 ******************************************************************************/
 #ifndef __STRUCT_H
 #define __STRUCT_H

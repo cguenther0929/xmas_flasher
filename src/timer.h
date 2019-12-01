@@ -1,20 +1,15 @@
 /******************************************************************************
-*   FILE: timer.h
-*
-*   PURPOSE: Header file for timer.c
-*
-*   DEVICE: PIC18F66K22
-*
-*   COMPILER: Microchip XC8 v2.0
-*
-*   IDE: MPLAB X v5.10
-*
-*   TODO:  
-*
-*   NOTE:
-*
+ *   FILE: 
+ *          timer.h
+ *
+ *   PURPOSE:
+ *          Timer-related routines are defined here
+ *
+ *   TODO:
+ *
+ *   NOTE:
+ *
 ******************************************************************************/
-
 #ifndef __TIMER_H
 #define __TIMER_H
 
@@ -23,23 +18,23 @@
 #include <stdbool.h>
 #include "config.h"             //Project specific header file
 
-/********************************************************
-*FUNCTION: void Timer0Init(bool interrupts, uint8_t prescaler, uint8_t clksource )
-*PURPOSE: To initialize timer 0.  Note: function set up so that
-        timer will operate in 16 bit mode.
-*PRECONDITION: Timer 1 is not initialized
-*POSTCONDITION: Timer 1 is ready to use
-*RETURN: Nothing
-********************************************************/
-void Timer0Init(uint8_t interrupts, uint16_t prescaler) ;
+/*
+ * Function:  void Timer0Init(uint8_t interrupts, uint16_t prescaler)
+ * --------------------
+ * Initialize timer zero.  This timer is responsible 
+ * for the main application timer.  
+ *
+ * returns: Nothing
+ */
+void Timer0Init(uint8_t interrupts, uint16_t prescaler);
 
-/********************************************************
-*FUNCTION: void Timer0On( void )
-*PURPOSE: To turn ON timer 0
-*PRECONDITION: Timer 1 could be OFF
-*POSTCONDITION: Timer 1 is now ON
-*RETURN: Nothing
-********************************************************/
+/*
+ * Function: void Timer0On( void )
+ * --------------------
+ * Turn on timer zero.  
+ *
+ * returns: Nothing
+ */
 void Timer0On( void );
 
 #endif

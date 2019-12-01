@@ -1,19 +1,15 @@
 /******************************************************************************
-*   FILE: isr.c
-*
-*   PURPOSE: Interrupt service routines are contained in this file.  This file contains
-*           algorithms that pertain to the interrupt service routine.
-*
-*   DEVICE: pic12lf1501
-*
-*   COMPILER: Microchip XC8 v2.0
-*
-*   IDE: MPLAB X v5.10
-*
-*   TODO:  
-*
-*   NOTE:
-*
+ *   FILE: 
+ *          isr.c
+ *
+ *   PURPOSE: 
+ *          Interrupt service routines are contained in this file.  This file contains
+ *          algorithms that pertain to the interrupt service routine.
+ *
+ *   TODO: 
+ *
+ *   NOTE:
+ *
 ******************************************************************************/
 
 #include "isr.h"                //Include the header file for this module.
@@ -78,10 +74,14 @@ void __interrupt () my_isr_routine (void) {
 
 }
 
+/*
 void DisableInterrupts( void ) {
     GIE     = 0;                //p68
 }
+*/
 
+/*
 void EnableInterrupts( void ) {
     GIE     = 1;                //p68
 }
+*/

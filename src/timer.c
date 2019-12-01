@@ -1,18 +1,14 @@
 /******************************************************************************
-*   FILE: timer.c
-*
-*   PURPOSE: Source file containing all timer-related routines.  
-*
-*   DEVICE: PIC18F66K22
-*
-*   COMPILER: Microchip XC8 v2.0
-*
-*   IDE: MPLAB X v5.10
-*
-*   TODO:  
-*
-*   NOTE:
-*
+ *   FILE: 
+ *          timer.c
+ *
+ *   PURPOSE: 
+ *          Source file containing all timer-related routines. 
+ *
+ *   TODO: 
+ *
+ *   NOTE:
+ *
 ******************************************************************************/
 
 #include "timer.h"              //Include the header file for this module

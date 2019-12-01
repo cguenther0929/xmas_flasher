@@ -1,16 +1,12 @@
 /******************************************************************************
- *   FILE: config.h
+ *   FILE: 
+ *          config.h
  *
- *   PURPOSE: Configuration file specific to the processor being used and the 
- *           underlying hardware. 
- *
- *   DEVICE: pic12lf1501
- *
- *   COMPILER: Microchip XC8 v2.0
- *
- *   IDE: MPLAB X v5.10
- *
- *   TODO:  
+ *   PURPOSE: 
+ *          Configuration file specific to the processor being used and the 
+ *          underlying hardware.
+ *  
+ *   TODO: 
  *
  *   NOTE:
  *
@@ -25,10 +21,10 @@
 /* Define States */
 typedef enum
 {
-    state_1,
-    state_2,
-    state_3,
-    state_4
+    state_quick_flicker_up_1,
+    state_quick_flicker_dn_1,
+    state_quick_flicker_up_2,
+    state_quick_flicker_dn_2
 }State;
 
 
@@ -49,7 +45,7 @@ typedef enum
 #define HEART_BEAT_MS       1.0                                         // Interrupt every this many (mili-seconds)
 #define TMR0_TICKS          ((HEART_BEAT_MS/1000.0)*TMR0_INC_FREQ)      // How many timer ticks between interrupts
 // #define TMR0_REG_SETTING    (uint8_t)(256-TMR0_TICKS)                // Value to be loaded into the 8-bit register
-#define TMR0_REG_SETTING    230                                         // Empirically derived value 
+#define TMR0_REG_SETTING    230                                         // Empirically derived value to be more accurate 
 
 /* DEFINE VARIOUS PIN FUNCTIONS */
 #define output              0           // Define the output pin direction setting

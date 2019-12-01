@@ -1,18 +1,14 @@
 /******************************************************************************
-*   FILE: main.c
-*
-*   PURPOSE: Main source
-*
-*   DEVICE: pic12lf1501
-*
-*   COMPILER: Microchip XC8 v2.0
-*
-*   IDE: MPLAB X v5.10
-*
-*   TODO:  
-*
-*   NOTE:
-*
+ *   FILE: 
+ *          isr.c
+ *
+ *   PURPOSE: 
+ *          Main source file
+ *
+ *   TODO: 
+ *
+ *   NOTE:
+ *
 ******************************************************************************/
 
 #include "main.h" 
@@ -46,7 +42,7 @@ void main()
     uint8_t blu_pwm_lvl     = 0;
     uint8_t blu_pwm_ctr     = 0;
 
-    State state             = state_1;
+    State state             = state_quick_flicker_up_1;
     
     SetUp();
     
@@ -71,16 +67,14 @@ void main()
         
         if (gblinfo.event5ms) {
             gblinfo.event5ms = false;
-            // app_ctr_5ms++;
             
         }
         
         if (gblinfo.event10ms) {
             gblinfo.event10ms = false;
-            // app_ctr_10ms++;
             
             /* Quick flicker up 2 */
-            if(state == state_3) {
+            if(state == state_quick_flicker_up_2) {
                 if (total_pwm < 18) {
                     total_pwm++;
                     red_pwm_lvl = (uint8_t)(RED_PWM_PERCENT * total_pwm);
@@ -88,12 +82,12 @@ void main()
                     blu_pwm_lvl = (uint8_t)(BLU_PWM_PERCENT * total_pwm);
                 }
                 else {
-                    state = state_4;
+                    state = state_quick_flicker_dn_2;
                 }
             }
             
             /* Quick flicker dwn 3 */
-            if(state == state_4) {
+            if(state == state_quick_flicker_dn_2) {
                 if (total_pwm > 6) {
                     total_pwm--;
                     red_pwm_lvl = (uint8_t)(RED_PWM_PERCENT * total_pwm);
@@ -101,7 +95,7 @@ void main()
                     blu_pwm_lvl = (uint8_t)(BLU_PWM_PERCENT * total_pwm);
                 }
                 else {
-                    state = state_1;
+                    state = state_quick_flicker_up_1;
                 }
             }
         }
@@ -110,7 +104,7 @@ void main()
             gblinfo.event100ms = false;
             
             /* Quick flicker up */
-            if(state == state_1) {
+            if(state == state_quick_flicker_up_1) {
                 if (total_pwm < PWM_FULL_COUNT) {
                     total_pwm++;
                     red_pwm_lvl = (uint8_t)(RED_PWM_PERCENT * total_pwm);
@@ -118,12 +112,12 @@ void main()
                     blu_pwm_lvl = (uint8_t)(BLU_PWM_PERCENT * total_pwm);
                 }
                 else {
-                    state = state_2;
+                    state = state_quick_flicker_dn_1;
                 }
             }
 
             /* Quick flicker down */
-            if(state == state_2) {
+            if(state == state_quick_flicker_dn_1) {
                 if (total_pwm > 6) {
                     total_pwm--;
                     red_pwm_lvl = (uint8_t)(RED_PWM_PERCENT * total_pwm);
@@ -131,29 +125,10 @@ void main()
                     blu_pwm_lvl = (uint8_t)(BLU_PWM_PERCENT * total_pwm);
                 }
                 else {
-                    state = state_3;
+                    state = state_quick_flicker_up_2;
                 }
             }
             
-            
-            // main_sec_ctr > 9 ? (main_sec_ctr = 0) : (main_sec_ctr++);
-
-            // if(main_sec_ctr < 3) {
-            //     red_pwm_lvl = 3;
-            //     grn_pwm_lvl = 2;
-            //     blu_pwm_lvl = 0;
-            // }
-            // else if(main_sec_ctr >= 3 && main_sec_ctr < 6) {
-            //     red_pwm_lvl = 6;
-            //     grn_pwm_lvl = 5;
-            //     blu_pwm_lvl = 1;
-            // }
-            // else {
-            //     red_pwm_lvl = 18;
-            //     grn_pwm_lvl = 17;
-            //     blu_pwm_lvl = 1;
-            // }
-
         }
 
         if(gblinfo.event1000ms) {
@@ -161,55 +136,6 @@ void main()
             GRN_LED = ~GRN_LED;
         }
 
-
-        
-        // // Quick 'flicker' up
-        // for(pwm_val = initial_pwm_val; pwm_val < 30; pwm_val++) {
-        //     PWM_ON(GRN_LED_PWM_BIT,pwm_val);
-        //     PWM_ON(RED_LED_PWM_BIT,pwm_val);
-        //     tick10msDelay(1);
-        // }
-        
-        // Ramdon Delay
-        // tick10msDelay(1);
-
-        // Quick 'flicker' dwn
-        // for(pwm_val = pwm_val; pwm_val > initial_pwm_val; pwm_val-=2) {
-        //     PWM_ON(GRN_LED_PWM_BIT,pwm_val);
-        //     PWM_ON(RED_LED_PWM_BIT,pwm_val);
-        //     tick10msDelay(1);
-        // }
-
-        // Ramdon Delay
-        // tick10msDelay(2);
-
-        // Quick 'flicker' up 2
-        // for(pwm_val = initial_pwm_val; pwm_val < 55; pwm_val++) {
-        //     PWM_ON(GRN_LED_PWM_BIT,pwm_val);
-        //     PWM_ON(RED_LED_PWM_BIT,pwm_val);
-        //     tick10msDelay(2);
-        // }
-        
-        // Ramdon Delay
-        // tick10msDelay(2);
-
-        // Quick 'flicker' dwn
-        // for(pwm_val = pwm_val; pwm_val > initial_pwm_val; pwm_val-=2) {
-        //     PWM_ON(GRN_LED_PWM_BIT,pwm_val);
-        //     PWM_ON(RED_LED_PWM_BIT,pwm_val);
-        //     tick10msDelay(1);
-        // }
-        
-        // Ramdon Delay
-        // tick10msDelay(3);
-        
-        // // Quick 'flicker' up 2
-        // for(pwm_val = initial_pwm_val; pwm_val < 60; pwm_val++) {
-        //     PWM_ON(GRN_LED_PWM_BIT,pwm_val);
-        //     PWM_ON(RED_LED_PWM_BIT,pwm_val);
-        //     tick10msDelay(2);
-        // }
-    
     }
 
 } //END Main()
@@ -236,11 +162,11 @@ void SetUp(void)
     
     Init_Interrupts();                  //Set up interrupts  
 
-    gblinfo.tick1ms     = 0;            // Initialize 100s of a tick1000mond counter to 0
-    gblinfo.tick5ms     = 0;            // Initialize 100s of a tick1000mond counter to 0
-    gblinfo.tick10ms    = 0;            // Initialize 100s of a tick1000mond counter to 0
-    gblinfo.tick100ms   = 0;            // Initialize 100s of a tick1000mond counter to 0
-    gblinfo.tick1000ms  = 0;            // Seconds counter
+    gblinfo.tick1ms     = 0;            // Initialize 1ms counter
+    gblinfo.tick5ms     = 0;            // Initialize 5ms counter
+    gblinfo.tick10ms    = 0;            // Initialize 10ms counter
+    gblinfo.tick100ms   = 0;            // Initialize 100ms counter
+    gblinfo.tick1000ms  = 0;            // Initialize 1000ms counter
 
     gblinfo.event1ms    = false;
     gblinfo.event5ms    = false;
@@ -257,14 +183,16 @@ void SetUp(void)
     Timer0On();             
 }
 
+/*
 void tick10msDelay(uint16_t ticks)
 {
     uint16_t i = 0;
-    uint16_t tick = 0; //Used to lock time value
+    uint16_t tick = 0;                      // Used to lock time value
     for (i = ticks; i > 0; i--)
     {
         tick = gblinfo.tick10ms;
-        while (tick == gblinfo.tick10ms); //Wait for time to wrap around (in one half tick1000mond)
+        while (tick == gblinfo.tick10ms);   // Wait for time to wrap around (in one half tick1000mond)
     }
 }
+*/
 /* END OF FILE */
